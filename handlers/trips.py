@@ -1,5 +1,6 @@
 from aiogram import Router
 from aiogram.types import Message
+from aiogram.fsm.context import FSMContext
 
 from states.trip_states import TripStates
 
@@ -10,10 +11,14 @@ from keyboards.trip_keyboard import destinations_keyboard
 
 router = Router()
 
-@router.message(TripStates.waiting_for_trip_code)
-async def process_trip_code(message: Message):
 
-    code = message.text.strip()
+@router.message(TripStates.waiting_for_trip_code)
+async def process_trip_code(
+    message: Message,
+    state: FSMContext
+):
+
+    code = message.text.strip().upper()
 
     trip = get_trip_by_code(code)
 
@@ -38,7 +43,17 @@ async def process_trip_code(message: Message):
         text += f"\n📍 {destination['name']}"
 
 
+    await state.update_data(
+        trip_id=trip["id"]
+    )    
+
+
+    await state.set_state(
+        TripStates.choosing_destination
+    )
+
+
     await message.answer(
-    text,
-    reply_markup=destinations_keyboard(destinations)
+        text,
+        reply_markup=destinations_keyboard(destinations)
     )

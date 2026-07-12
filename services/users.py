@@ -48,3 +48,27 @@ def get_or_create_user(
     conn.close()
     
     return new_user_id
+
+
+def get_user_by_telegram_id(telegram_id):
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    SELECT id
+    FROM users
+    WHERE telegram_id = ?
+    """,
+    (
+        telegram_id,
+    ))
+
+    user = cursor.fetchone()
+
+    conn.close()
+
+    if user:
+        return user[0]
+
+    return None
