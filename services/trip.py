@@ -46,19 +46,18 @@ def get_destinations(trip_id):
         trip_id,
     ))
     
-    cities = cursor.fetchall()
+    destinations = cursor.fetchall()
 
     conn.close()
 
-    if cities:
+    if destinations:
         return [
         {
-            "id": city[0],
-            "name": city[1]
+            "id": destination[0],
+            "name": destination[1]
         }
-        for city in cities
+        for destination in destinations
         ]
-    return None
 
     
 def set_current_destination(user_id, trip_id, destination_id):

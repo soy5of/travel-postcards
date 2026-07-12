@@ -28,6 +28,6 @@ async def start(
 
 
     await message.answer(
-        "✈️ Welcome to 22 Frames!\n\n"
-        "Enter your trip code:"
+        "✈️ Welcome to Your Postcards!\n\n"
+        "To start collecting memories enter your trip code:"
     )
