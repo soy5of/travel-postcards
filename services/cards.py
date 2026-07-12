@@ -1,3 +1,6 @@
+from services.database import get_connection
+
+
 def collect_card(
         user_id,
         card_id
