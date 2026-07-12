@@ -2,7 +2,8 @@ from aiogram import Router
 from aiogram.types import CallbackQuery
 from aiogram.fsm.context import FSMContext
 
-
+from states.trip_states import TripStates
+from keyboards.card_keyboard import upload_photo_keyboard
 from services.trip import get_next_card
 
 
@@ -41,7 +42,17 @@ async def open_frame(
         return
 
 
+    await state.set_state(
+        TripStates.waiting_for_photo
+    )
+
+    await state.update_data(
+        current_card_id=card["id"]
+    )
+
+
     await callback.message.answer(
         f"🎴 {card['title']}\n\n"
-        f"{card['description']}"
+        f"{card['description']}",
+        reply_markup=upload_photo_keyboard(card["id"])
     )

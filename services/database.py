@@ -121,7 +121,30 @@ def init_db():
         UNIQUE(user_id, trip_id)
     )
     """)
-    
+
+
+    # Photos uploaded for completed frames
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS photos (
+
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+        user_id INTEGER NOT NULL,
+        card_id INTEGER NOT NULL,
+
+        file_id TEXT NOT NULL,
+
+        caption TEXT,
+
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+        FOREIGN KEY(user_id)
+        REFERENCES users(id),
+
+        FOREIGN KEY(card_id)
+        REFERENCES cards(id)
+    )
+    """) 
 
     conn.commit()
     conn.close()
